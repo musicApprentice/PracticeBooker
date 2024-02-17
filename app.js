@@ -1,46 +1,67 @@
-// const db2 = new PouchDB('rooms2');
+const db2 = new PouchDB('rooms2');
 
-// // Function to initialize the room matrix
-// async function initializeRooms() {
-//     try {
-//         const doc = await db2.get('roomMatrix'); // Use consistent document ID
-//         console.log('Room matrix already initialized.');
-//     } catch (err) {
-//         if (err.name === 'not_found') {
-//             // Initialize a 63x21 array of false values
-//             const roomMatrix1 = Array(63).fill().map(() => Array(21).fill(false));
-//             await db2.put({ // Use db2 here
-//                 _id: 'roomMatrix', // Use consistent document ID
-//                 matrix: roomMatrix1
-//             });
-//             console.log('Room matrix initialized.');
-//         } else {
-//             console.error('An error occurred:', err);
-//         }
-//     }
-// }
+// Function to initialize the room matrix
+async function initializeRooms() {
+    try {
+        const doc = await db2.get('roomMatrix1'); // Use consistent document ID
+        console.log('Room matrix already initialized.');
+    } catch (err) {
+        if (err.name === 'not_found') {
+            const roomMatrix1 = Array(15).fill().map(() => Array(13).fill(false));
+            await db2.put({ // Use db2 here
+                _id: 'roomMatrix1', // Use consistent document ID
+                matrix: roomMatrix1
+            });
+            console.log('Room matrix initialized.');
+        } else {
+            console.error('An error occurred:', err);
+        }
+    }
+}
 
-// async function book(x, y) {
-//     try {
-//         const doc = await db2.get('roomMatrix'); // Ensure you're using the correct ID and db2 instance
-//         if (doc.matrix[x][y] === false) {
-//             doc.matrix[x][y] = true; // Book the room
-//             await db2.put({ // Use db2 here
-//                 _id: 'roomMatrix',
-//                 _rev: doc._rev,
-//                 matrix: doc.matrix
-//             });
-//             console.log(`Room at [${x},${y}] booked successfully.`);
-//             // Ensure generateBookingTable is defined and called correctly here
-//             // generateBookingTable(); // This needs to be defined elsewhere in your script
-//         } else {
-//             console.log('Room is already booked.');
-//         }
-//     } catch (err) {
-//         console.error('An error occurred:', err);
-//     }
-// }
-// initializeRooms();
+async function book(x, y) {
+    try {
+        const doc = await db2.get('roomMatrix1'); // Ensure you're using the correct ID and db2 instance
+        if (doc.matrix[x][y] === false) {
+            doc.matrix[x][y] = true; // Book the room
+            await db2.put({ // Use db2 here
+                _id: 'roomMatrix1',
+                _rev: doc._rev,
+                matrix: doc.matrix
+            });
+            console.log(`Room at [${x},${y}] booked successfully.`);
+            // Ensure generateBookingTable is defined and called correctly here
+            // generateBookingTable(); // This needs to be defined elsewhere in your script
+        } else {
+            console.log('Room is already booked.');
+        }
+    } catch (err) {
+        console.error('An error occurred:', err);
+    }
+}
+
+async function resetRooms() {
+  try {
+      const doc = await db2.get('roomMatrix1'); // Ensure you're using the correct ID and db2 instance
+      // Create a new 63x21 array of false values to reset the booking status
+      const newRoomMatrix = Array(15).fill().map(() => Array(13).fill(false));
+      // Update the document with the new matrix
+      await db2.put({
+          _id: 'roomMatrix1',
+          _rev: doc._rev, // Include the revision to update the document
+          matrix: newRoomMatrix
+      });
+      console.log(newRoomMatrix);
+
+      console.log('All rooms have been reset successfully.');
+      // Optionally, update the UI to reflect these changes
+      // generateBookingTable(); // This needs to be defined elsewhere in your script
+  } catch (err) {
+      console.error('An error occurred while resetting rooms:', err);
+  }
+}
+
+initializeRooms();
 
 
 function addSubmitButton() {
@@ -121,4 +142,5 @@ function toggleBooking(button) {
 // Generate the schedule table on page load
 window.onload = function() {
   generateScheduleTable(scheduleData);
+  initializeRooms();
 };
