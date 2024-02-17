@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TodoList</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+    <header>
+        <h1>
+            UMass Department of Music and Dance
+        </h1>
+        <h2>
+            Practice Room Scheduler
+        </h2>
+        <h3>Search By Room</h3>
+    </header>
+    
+    <form>
+      <div id="dropdown-container">
+        <select id="dropdown">
+          <option value=1 >Room 158</option>
+          <option value=2 >Room 159</option>
+          <option value=3 >Room 160</option>
+          <option value=4 >Room 161</option>
+          <option value=5 >Room 162</option>
+          <option value=6 >Room 163</option>
+          <option value=7 >Room 164</option>
+          <option value=8 >Room 165</option>
+          <option value=9 >Room 166</option>
+          <option value=10 >Room 167</option>
+          <option value=11 >Room 168</option>
+          <option value=12 >Room 169</option>
+          <option value=13 >Room 170</option>
+        </select>
+        <button onclick="addSubmitButton()" class="submit-button">Submit</button>
+      </div>
+    </form>
+    <table id="schedule">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Room 158</th>
+          <th>Room 159</th>
+          <th>Room 160</th>
+          <th>Room 161</th>
+          <th>Room 162</th>
+          <th>Room 163</th>
+          <th>Room 164</th>
+          <th>Room 165</th>
+          <th>Room 166</th>
+          <th>Room 167</th>
+          <th>Room 168</th>
+          <th>Room 169</th>
+          <th>Room 170</th>
+        </tr>
+      </thead>
+      <tbody id="schedule-body">
+        <!-- Data will be added here -->
+      </tbody>
+    </table>
+
+
+
+    <script src="./app.js">
+     
+    </script>
+</body>
+</html>
