@@ -72,6 +72,7 @@ async function resetRooms() {
           _rev: doc._rev, // Include the revision to update the document
           matrix: newRoomMatrix
       });
+      generateScheduleTable(doc.matrix)
       console.log(newRoomMatrix);
 
       console.log('All rooms have been reset successfully.');
@@ -161,8 +162,9 @@ function toggleBooking(button) {
 }
 
 // Generate the schedule table on page load
-window.onload = function() {
-  const data = db2.get('roomMatrix1');
-  generateScheduleTable(scheduleData);
+window.onload = async function() {
+  var data = await db2.get('roomMatrix1');
+  data = data.matrix;
+  generateScheduleTable(data);
   initializeRooms();
 };
