@@ -72,7 +72,6 @@ async function resetRooms() {
           _rev: doc._rev, // Include the revision to update the document
           matrix: newRoomMatrix
       });
-      console.log(newRoomMatrix);
       generateScheduleTable(newRoomMatrix)
 
       console.log('All rooms have been reset successfully.');
