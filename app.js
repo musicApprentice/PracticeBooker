@@ -1,5 +1,25 @@
 const db2 = new PouchDB('rooms2');
 
+const timeRoomData = [
+  ["8:00 AM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["9:00 AM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["10:00 AM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["11:00 AM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["12:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["1:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["2:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["3:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["4:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["5:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["6:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["7:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["8:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["9:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  ["10:00 PM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
+  
+  // Add more data rows as needed
+];
+
 // Function to initialize the room matrix
 async function initializeRooms() {
     try {
@@ -7,7 +27,7 @@ async function initializeRooms() {
         console.log('Room matrix already initialized.');
     } catch (err) {
         if (err.name === 'not_found') {
-            const roomMatrix1 = Array(15).fill().map(() => Array(13).fill(false));
+            const roomMatrix1 = timeRoomData;
             await db2.put({ // Use db2 here
                 _id: 'roomMatrix1', // Use consistent document ID
                 matrix: roomMatrix1
@@ -22,14 +42,15 @@ async function initializeRooms() {
 async function book(x, y) {
     try {
         const doc = await db2.get('roomMatrix1'); // Ensure you're using the correct ID and db2 instance
-        if (doc.matrix[x][y] === false) {
-            doc.matrix[x][y] = true; // Book the room
+        if (doc.matrix[x][y] === "Available") {
+            doc.matrix[x][y] = "Unavailable"; // Book the room
             await db2.put({ // Use db2 here
                 _id: 'roomMatrix1',
                 _rev: doc._rev,
                 matrix: doc.matrix
             });
             console.log(`Room at [${x},${y}] booked successfully.`);
+            generateScheduleTable(doc.matrix);
             // Ensure generateBookingTable is defined and called correctly here
             // generateBookingTable(); // This needs to be defined elsewhere in your script
         } else {
@@ -44,7 +65,7 @@ async function resetRooms() {
   try {
       const doc = await db2.get('roomMatrix1'); // Ensure you're using the correct ID and db2 instance
       // Create a new 63x21 array of false values to reset the booking status
-      const newRoomMatrix = Array(15).fill().map(() => Array(13).fill(false));
+      const newRoomMatrix = timeRoomData;
       // Update the document with the new matrix
       await db2.put({
           _id: 'roomMatrix1',
@@ -141,6 +162,7 @@ function toggleBooking(button) {
 
 // Generate the schedule table on page load
 window.onload = function() {
+  const data = db2.get('roomMatrix1');
   generateScheduleTable(scheduleData);
   initializeRooms();
 };
