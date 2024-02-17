@@ -1,4 +1,24 @@
 const db2 = new PouchDB('rooms2');
+let highlightedCell = null;
+let highlightedIndex = null;
+
+//Dropdown button for choose availability by room
+function addSubmitButton() {
+  const dropdownContainer = document.getElementById('dropdown-container');
+  const selectedOption = document.getElementById('dropdown').value;
+  
+  // Create a submit button
+  const submitButton = document.createElement('button');
+  submitButton.textContent = 'Submit ' + selectedOption; // Change button text as needed
+  submitButton.onclick = function() {
+    // Perform actions when the submit button is clicked
+    submitButton.submit-button();
+    alert('Submitted ' + selectedOption);
+  };
+  
+  // Append the submit button to the dropdown container
+  dropdownContainer.appendChild(submitButton); 
+}
 
 const timeRoomData = [
   ["8:00 AM", "Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"],
@@ -130,17 +150,37 @@ function generateScheduleTable(data) {
   const tbody = document.getElementById('schedule-body');
   tbody.innerHTML = ''; // Clear existing content
 
+  // Function to toggle highlighting
+  function toggleHighlight(cell, index) {
+    // Remove highlight from all cells
+    const allCells = document.querySelectorAll('.time-slot');
+    allCells.forEach(cell => {
+      cell.classList.remove('highlighted');
+    });
+
+    // Highlight the clicked cell
+    cell.classList.add('highlighted');
+
+    // Update global variables
+    highlightedCell = cell;
+    highlightedIndex = index;
+  }
+
   // Loop through each row in the data array
-  data.forEach(rowData => {
+  data.forEach((rowData, rowIndex) => {
     const row = document.createElement('tr');
 
     // Loop through each item in the row
-    rowData.forEach(item => {
+    rowData.forEach((item, cellIndex) => {
       const cell = document.createElement('td');
+      cell.classList.add('time-slot'); // Add 'time-slot' class to each cell
       if (item === 'Available' || item === 'Booked') {
         const button = document.createElement('button');
         button.textContent = item;
-        button.onclick = () => toggleBooking(button);
+        button.onclick = () => {
+          toggleHighlight(cell, { rowIndex, cellIndex }); // Highlight the cell
+          //toggleBooking(button); // Perform booking or cancellation
+        };
         cell.appendChild(button);
       } else {
         cell.textContent = item;
@@ -151,15 +191,14 @@ function generateScheduleTable(data) {
     tbody.appendChild(row);
   });
 }
-
 // Function to handle button click (toggle booking status)
-function toggleBooking(button) {
-  button.classList.toggle('highlighted');
-  //button.textContent = button.textContent === 'Available' ? 'Booked' : 'Booked';
-  // You can add your logic here to handle booking/cancellation
+// function toggleBooking(button) {
+//   button.classList.toggle('highlighted');
+//   //button.textContent = button.textContent === 'Available' ? 'Booked' : 'Booked';
+//   // You can add your logic here to handle booking/cancellation
 
-  //set var to be passed on clicking booking button
-}
+//   //set var to be passed on clicking booking button
+// }
 
 // Generate the schedule table on page load
 window.onload = async function() {
@@ -168,3 +207,40 @@ window.onload = async function() {
   generateScheduleTable(data);
   initializeRooms();
 };
+
+function animateSearchByTime() {
+  const button = document.querySelector('.submit-button1');
+  button.classList.add('flash-animation');
+  setTimeout(function() {
+    button.classList.remove('flash-animation');
+  }, 250); // Adjust the duration of the flash as needed
+  // Call the searchByTime function after the animation is complete
+  setTimeout(searchByTime, 250); // Adjust the time as needed
+}
+
+function searchByTime() {
+
+  const time = document.getElementById('dropdown2').value;
+
+  //show animation before table updates:
+  const dropdown = document.getElementById('dropdown2');
+    dropdown.style.opacity = 1;
+
+
+  scheduleData.forEach((row) => row[0] == time? generateScheduleTable([row]): false);
+
+}
+
+function submitBooking() {
+  if (highlightedCell && highlightedIndex) {
+    console.log('Highlighted cell:', highlightedCell);
+    console.log('Highlighted index:', highlightedIndex);
+    const allCells = document.querySelectorAll('.time-slot');
+    allCells.forEach(cell => {
+      cell.classList.remove('highlighted');
+    });
+    // Perform actions using highlightedCell and highlightedIndex
+  } else {
+    console.log('Please Select a Time');
+  }
+}
