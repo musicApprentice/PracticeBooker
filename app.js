@@ -843,9 +843,7 @@ async function submitBooking(bookFnc) {
     // Perform actions using highlightedCell and highlightedIndex
   } else {
     console.log("Please Select a Time");
-    resetTitleAsRoomNumber();
-    resetheader();
-    return;
+  
   }
   
 
