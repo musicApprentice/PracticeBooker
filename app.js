@@ -711,10 +711,41 @@ async function searchByTime() {
   let templine = doc[realtime];
 
   templine[0] == time ? generateScheduleTable([templine]) : false
+  resetTitleAsRoomNumber();
 
   // templine.forEach((row) =>
   //   row[0] == time ? generateScheduleTable([row]) : false
   // );
+}
+
+function resetTitleAsRoomNumber() {
+  var table = document.getElementById("schedule")
+  table.deleteTHead();
+  var header = table.createTHead();
+  var newrow = header.insertRow(0);
+  var headers = Array.from(roomNumberMappings);
+  headers.unshift("Time");
+  for (let i = 0; i < headers.length; i++) {
+    var newcell = newrow.insertCell(i);
+    newcell.innerHTML = headers[i];
+    newcell.style.color = "white";
+    newcell.style.backgroundColor = "maroon";
+  }
+}
+
+function resetTitleAsTime() {
+  var table = document.getElementById("schedule")
+  table.deleteTHead();
+  var header = table.createTHead();
+  var newrow = header.insertRow(0);
+  var headers = Array.from(timeMapping);
+  headers.unshift("Time");
+  for (let i = 0; i < headers.length; i++) {
+    var newcell = newrow.insertCell(i);
+    newcell.innerHTML = headers[i];
+    newcell.style.color = "white";
+    newcell.style.backgroundColor = "maroon";
+  }
 }
 
 async function submitBooking() {
@@ -729,6 +760,7 @@ async function submitBooking() {
         roomidx = roomNumberMappings.indexOf(savedRoom);
         book(cellidx - 1, roomidx + 1)
         savedRoom = null;
+        resetTitleAsTime();
 
         // var table = document.getElementById("schedule")
         // table.deleteTHead();
