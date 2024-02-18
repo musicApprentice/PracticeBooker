@@ -668,6 +668,19 @@ function animateSearchByTime() {
   setTimeout(searchByTime, 250); // Adjust the time as needed
 }
 
+function animateSearchByRoom() {
+  const button = document.querySelector(".submit-button");
+  button.classList.add("flash-animation");
+  setTimeout(function () {
+    button.classList.remove("flash-animation");
+  }, 250); // Adjust the duration of the flash as needed
+  // Call the searchByTime function after the animation is complete
+  setTimeout(searchByRoom, 250); // Adjust the time as needed
+}
+
+const timeMapping = ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM",
+"3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
+
 async function searchByTime() {
 
   let time = document.getElementById('dropdown2').value;
@@ -714,37 +727,30 @@ async function submitBooking() {
   }
 }
 
-const roomNumberMappings = [
-  { 1: "Room 158" },
-  { 2: "Room 159" },
-  { 3: "Room 160" },
-  { 4: "Room 161" },
-  { 5: "Room 162" },
-  { 6: "Room 163" },
-  { 7: "Room 164" },
-  { 8: "Room 165" },
-  { 9: "Room 166" },
-  { 10: "Room 167" },
-  { 11: "Room 168" },
-  { 12: "Room 169" },
-  { 13: "Room 170" },
-];
+const roomNumberMappings = ["Room 158","Room 159","Room 160","Room 161" ,"Room 162" ,"Room 163" ,
+  "Room 164","Room 165","Room 166","Room 167","Room 168","Room 169","Room 170"];
 
-const timeMapping = ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM",
-"3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
+async function searchByRoom() {
+  var room = document.getElementById("dropdown1").value;
+  room = "Room " + room; 
+  savedRoom = room;
 
-function filterByRoom(roomNumb) {
-  allTimesForRoom = [];
+  //show animation before table updates:
+  const dropdown = document.getElementById('dropdown1');
+  dropdown.style.opacity = 1;
 
-  filteredArray = roomNumberMappings.filter(
-    (element) => Object.values(element)[0] === roomNumb
-  );
-  //Return type of filter is another array
-  // [{13:170}]
-  index = Object.values(filteredArray[0]);
-  //13
-  scheduleData.forEach((row) => {
-    allTimesForRoom.push(row[index]);
-  });
-  generateScheduleTable(allTimesForRoom);
+  var doc = await db2.get("roomMatrix1");
+  doc = doc.matrix;
+  roomIdx = roomNumberMappings.indexOf(savedRoom) + 1;
+  function extractColumn(array, columnIndex) {
+    return array.map(row => row[columnIndex])
+  }
+  var templine = extractColumn(doc, roomIdx);
+  templine.unshift(savedRoom)
+
+  templine[0] == savedRoom ? generateScheduleTable([templine]) : false
+
+  // templine.forEach((row) =>
+  //   row[0] == time ? generateScheduleTable([row]) : false
+  // );
 }
