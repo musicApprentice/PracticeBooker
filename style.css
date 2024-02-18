@@ -158,3 +158,10 @@ button {
 .flash-animation {
   animation: flash 0.5s infinite; /* Adjust animation duration as needed */
 }
+
+.date {
+  font-size: 2rem;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 20px;
+}
