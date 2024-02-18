@@ -605,11 +605,12 @@ function generateScheduleTable(data) {
     var header = table.createTHead();
     var newrow = header.insertRow(0);
     var headers = Array.from(timeMapping);
-    headers.unshift(" ");
+    headers.unshift("Room");
     for (let i = 0; i < headers.length; i++) {
       var newcell = newrow.insertCell(i);
       newcell.innerHTML = headers[i];
-      newcell.className = "th";
+      newcell.style.color = "white";
+      newcell.style.backgroundColor = "maroon";
     }
   }
   tbody.innerHTML = ""; // Clear existing content
@@ -722,7 +723,32 @@ async function submitBooking() {
     console.log('Highlighted index:', highlightedIndex);
 
     if (savedTime == null) {
-      book(highlightedIndex.rowIndex, highlightedIndex.cellIndex)
+      if (savedRoom !== null) {
+        var cellidx = highlightedIndex.cellIndex;
+        const doc = await db2.get('roomMatrix1');
+        roomidx = roomNumberMappings.indexOf(savedRoom);
+        book(cellidx - 1, roomidx + 1)
+        savedRoom = null;
+
+        // var table = document.getElementById("schedule")
+        // table.deleteTHead();
+        // var header = table.createTHead();
+        // var newrow = header.insertRow(0);
+        // var headers = Array.from(roomNumberMappings);
+        // headers.unshift("Time");
+        // for (let i = 0; i < headers.length; i++) {
+        //   var newcell = newrow.insertCell(i);
+        //   newcell.innerHTML = headers[i];
+        //   newcell.style.color = "white";
+        //   newcell.style.backgroundColor = "maroon";
+        // }
+        // var data = await db2.get("roomMatrix1");
+        // data = data.matrix;
+        // generateScheduleTable(data);
+        // initializeRooms();
+      } else {
+        book(highlightedIndex.rowIndex, highlightedIndex.cellIndex)
+      }
     } else {
       var cellidx = highlightedIndex.cellIndex;
       const doc = await db2.get('roomMatrix1');
