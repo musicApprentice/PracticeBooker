@@ -2,6 +2,7 @@ const db2 = new PouchDB("rooms2");
 let highlightedCell = null;
 let highlightedIndex = null;
 let savedTime = null;
+let savedRoom = null;
 
 //Dropdown button for choose availability by room
 function addSubmitButton() {
@@ -598,6 +599,19 @@ const scheduleData = [
 // Function to generate schedule table from data array
 function generateScheduleTable(data) {
   const tbody = document.getElementById("schedule-body");
+  if (savedRoom !== null) {
+    var table = document.getElementById("schedule")
+    table.deleteTHead();
+    var header = table.createTHead();
+    var newrow = header.insertRow(0);
+    var headers = Array.from(timeMapping);
+    headers.unshift(" ");
+    for (let i = 0; i < headers.length; i++) {
+      var newcell = newrow.insertCell(i);
+      newcell.innerHTML = headers[i];
+      newcell.className = "th";
+    }
+  }
   tbody.innerHTML = ""; // Clear existing content
 
   // Function to toggle highlighting
