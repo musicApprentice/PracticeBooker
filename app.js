@@ -1,6 +1,7 @@
 const db2 = new PouchDB('rooms2');
 let highlightedCell = null;
 let highlightedIndex = null;
+let savedTime = null;
 
 //Dropdown button for choose availability by room
 function addSubmitButton() {
@@ -220,21 +221,33 @@ function animateSearchByTime() {
 
 function searchByTime() {
 
-  const time = document.getElementById('dropdown2').value;
+  let time = document.getElementById('dropdown2').value;
+  savedTime = time;
 
   //show animation before table updates:
   const dropdown = document.getElementById('dropdown2');
-    dropdown.style.opacity = 1;
+  dropdown.style.opacity = 1;
 
 
   scheduleData.forEach((row) => row[0] == time? generateScheduleTable([row]): false);
 
 }
 
-function submitBooking() {
+async function submitBooking() {
   if (highlightedCell && highlightedIndex) {
     console.log('Highlighted cell:', highlightedCell);
     console.log('Highlighted index:', highlightedIndex);
+
+    if (savedTime == null) {
+      book(highlightedIndex.rowIndex, highlightedIndex.cellIndex)
+    } else {
+      var cellidx = highlightedIndex.cellIndex;
+      const doc = await db2.get('roomMatrix1');
+      realtime = timeMapping.indexOf(savedTime);
+      book(realtime, cellidx)
+      savedTime = null;
+    }
+
     const allCells = document.querySelectorAll('.time-slot');
     allCells.forEach(cell => {
       cell.classList.remove('highlighted');
@@ -243,4 +256,39 @@ function submitBooking() {
   } else {
     console.log('Please Select a Time');
   }
+}
+
+const roomNumberMappings = [
+  { 1: "Room 158" },
+  { 2: "Room 159" },
+  { 3: "Room 160" },
+  { 4: "Room 161" },
+  { 5: "Room 162" },
+  { 6: "Room 163" },
+  { 7: "Room 164" },
+  { 8: "Room 165" },
+  { 9: "Room 166" },
+  { 10: "Room 167" },
+  { 11: "Room 168" },
+  { 12: "Room 169" },
+  { 13: "Room 170" },
+];
+
+const timeMapping = ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM",
+"3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
+
+function filterByRoom(roomNumb) {
+  allTimesForRoom = [];
+
+  filteredArray = roomNumberMappings.filter(
+    (element) => Object.values(element)[0] === roomNumb
+  );
+  //Return type of filter is another array
+  // [{13:170}]
+  index = Object.values(filteredArray[0]);
+  //13
+  scheduleData.forEach((row) => {
+    allTimesForRoom.push(row[index]);
+  });
+  generateScheduleTable(allTimesForRoom);
 }
