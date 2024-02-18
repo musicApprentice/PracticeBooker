@@ -165,3 +165,8 @@ button {
   display: flex;
   margin-bottom: 20px;
 }
+
+.unavailable {
+  background-color: #f2f2f2; /* Light grey background */
+  color: #666; /* Darker text color for contrast */
+}

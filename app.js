@@ -680,12 +680,15 @@ function generateScheduleTable(data) {
           //toggleBooking(button); // Perform booking or cancellation
         };
         cell.appendChild(button);
+        if (item === "Unavailable") {
+          // Add the 'unavailable' class to cells with "Unavailable"
+          cell.classList.add("unavailable");
+        }
       } else {
         cell.textContent = item;
       }
       row.appendChild(cell);
     });
-
     tbody.appendChild(row);
   });
 }
