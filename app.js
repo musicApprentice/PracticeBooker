@@ -811,12 +811,12 @@ async function submitBooking() {
     allCells.forEach(cell => {
       cell.classList.remove('highlighted');
     });
-    
+    resetTitleAsRoomNumber();
     // Perform actions using highlightedCell and highlightedIndex
   } else {
     console.log("Please Select a Time");
   }
-  resetTitleAsRoomNumber();
+  
 
 }
 
