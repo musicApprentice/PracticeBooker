@@ -811,10 +811,13 @@ async function submitBooking() {
     allCells.forEach(cell => {
       cell.classList.remove('highlighted');
     });
+    
     // Perform actions using highlightedCell and highlightedIndex
   } else {
     console.log("Please Select a Time");
   }
+  resetTitleAsRoomNumber();
+
 }
 
 const roomNumberMappings = ["Room 158","Room 159","Room 160","Room 161" ,"Room 162" ,"Room 163" ,
