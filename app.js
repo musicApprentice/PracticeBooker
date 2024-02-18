@@ -684,6 +684,8 @@ window.onload = async function () {
 };
 
 async function resetheader() {
+  savedRoom = null;
+  savedTime = null;
   var data = await db2.get("roomMatrix1");
   data = data.matrix;
   generateScheduleTable(data);
@@ -811,12 +813,15 @@ async function submitBooking() {
     allCells.forEach(cell => {
       cell.classList.remove('highlighted');
     });
-    
+    resetTitleAsRoomNumber();
     // Perform actions using highlightedCell and highlightedIndex
   } else {
     console.log("Please Select a Time");
+    resetTitleAsRoomNumber();
+    resetheader();
+    return;
   }
-  resetTitleAsRoomNumber();
+  
 
 }
 
