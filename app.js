@@ -599,20 +599,30 @@ const scheduleData = [
 // Function to generate schedule table from data array
 function generateScheduleTable(data) {
   const tbody = document.getElementById("schedule-body");
+  // if (savedRoom !== null) {
+  //   // var table = document.getElementById("schedule")
+  //   // table.deleteTHead();
+  //   // var header = table.createTHead();
+  //   // var newrow = header.insertRow(0);
+  //   // var headers = Array.from(timeMapping);
+  //   // headers.unshift("Room");
+  //   // for (let i = 0; i < headers.length; i++) {
+  //   //   var newcell = newrow.insertCell(i);
+  //   //   newcell.innerHTML = headers[i];
+  //   //   newcell.style.color = "white";
+  //   //   newcell.style.backgroundColor = "maroon";
+  //   // }
+  //   resetTitleAsTime();
+  // } 
+  if (savedTime !== null) {
+    resetTitleAsRoomNumber();
+  } 
   if (savedRoom !== null) {
-    var table = document.getElementById("schedule")
-    table.deleteTHead();
-    var header = table.createTHead();
-    var newrow = header.insertRow(0);
-    var headers = Array.from(timeMapping);
-    headers.unshift("Room");
-    for (let i = 0; i < headers.length; i++) {
-      var newcell = newrow.insertCell(i);
-      newcell.innerHTML = headers[i];
-      newcell.style.color = "white";
-      newcell.style.backgroundColor = "maroon";
-    }
+    resetTitleAsTime();
   }
+  // if (savedTime === null && savedRoom === null) {
+  //   resetheader();
+  // }
   tbody.innerHTML = ""; // Clear existing content
 
   // Function to toggle highlighting
@@ -673,6 +683,13 @@ window.onload = async function () {
   initializeRooms();
 };
 
+async function resetheader() {
+  var data = await db2.get("roomMatrix1");
+  data = data.matrix;
+  generateScheduleTable(data);
+  initializeRooms();
+};
+
 function animateSearchByTime() {
   const button = document.querySelector(".submit-button1");
   button.classList.add("flash-animation");
@@ -699,6 +716,7 @@ const timeMapping = ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "
 async function searchByTime() {
 
   let time = document.getElementById('dropdown2').value;
+  savedRoom = null;
   savedTime = time;
 
   //show animation before table updates:
@@ -711,7 +729,7 @@ async function searchByTime() {
   let templine = doc[realtime];
 
   templine[0] == time ? generateScheduleTable([templine]) : false
-  resetTitleAsRoomNumber();
+  //resetTitleAsRoomNumber();
 
   // templine.forEach((row) =>
   //   row[0] == time ? generateScheduleTable([row]) : false
@@ -760,7 +778,7 @@ async function submitBooking() {
         roomidx = roomNumberMappings.indexOf(savedRoom);
         book(cellidx - 1, roomidx + 1)
         savedRoom = null;
-        resetTitleAsTime();
+        //resetTitleAsTime();
 
         // var table = document.getElementById("schedule")
         // table.deleteTHead();
@@ -806,6 +824,7 @@ async function searchByRoom() {
   var room = document.getElementById("dropdown1").value;
   room = "Room " + room; 
   savedRoom = room;
+  savedTime = null;
 
   //show animation before table updates:
   const dropdown = document.getElementById('dropdown1');
