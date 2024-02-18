@@ -310,6 +310,29 @@ async function book(x, y) {
   }
 }
 
+async function unbook(x, y) {
+  try {
+    const doc = await db2.get("roomMatrix1"); // Ensure you're using the correct ID and db2 instance
+    if (doc.matrix[x][y] === "Unavailable") {
+      doc.matrix[x][y] = "Available"; // Book the room
+      await db2.put({
+        // Use db2 here
+        _id: "roomMatrix1",
+        _rev: doc._rev,
+        matrix: doc.matrix,
+      });
+      console.log(`Room at [${x},${y}] cancelled successfully.`);
+      generateScheduleTable(doc.matrix);
+      // Ensure generateBookingTable is defined and called correctly here
+      // generateBookingTable(); // This needs to be defined elsewhere in your script
+    } else {
+      console.log("Room is not booked yet.");
+    }
+  } catch (err) {
+    console.error("An error occurred:", err);
+  }
+}
+
 async function resetRooms() {
   try {
     const doc = await db2.get("roomMatrix1"); // Ensure you're using the correct ID and db2 instance
@@ -649,7 +672,7 @@ function generateScheduleTable(data) {
     rowData.forEach((item, cellIndex) => {
       const cell = document.createElement("td");
       cell.classList.add("time-slot"); // Add 'time-slot' class to each cell
-      if (item === "Available" || item === "Booked") {
+      if (item === "Available" || item === "Unavailable") {
         const button = document.createElement("button");
         button.textContent = item;
         button.onclick = () => {
@@ -766,7 +789,13 @@ function resetTitleAsTime() {
   }
 }
 
-async function submitBooking() {
+async function submitBooking(bookFnc) {
+  if (bookFnc) {
+    bookFnc = book;
+  }
+  else {
+    bookFnc = unbook;
+  }
   if (highlightedCell && highlightedIndex) {
     console.log('Highlighted cell:', highlightedCell);
     console.log('Highlighted index:', highlightedIndex);
@@ -776,7 +805,7 @@ async function submitBooking() {
         var cellidx = highlightedIndex.cellIndex;
         const doc = await db2.get('roomMatrix1');
         roomidx = roomNumberMappings.indexOf(savedRoom);
-        book(cellidx - 1, roomidx + 1)
+        bookFnc(cellidx - 1, roomidx + 1)
         savedRoom = null;
         //resetTitleAsTime();
 
@@ -797,13 +826,13 @@ async function submitBooking() {
         // generateScheduleTable(data);
         // initializeRooms();
       } else {
-        book(highlightedIndex.rowIndex, highlightedIndex.cellIndex)
+        bookFnc(highlightedIndex.rowIndex, highlightedIndex.cellIndex)
       }
     } else {
       var cellidx = highlightedIndex.cellIndex;
       const doc = await db2.get('roomMatrix1');
       realtime = timeMapping.indexOf(savedTime);
-      book(realtime, cellidx)
+      bookFnc(realtime, cellidx)
       savedTime = null;
     }
 
