@@ -289,21 +289,18 @@ async function initializeRooms() {
 
 async function book(x, y) {
   try {
-    const doc = await db2.get("roomMatrix1"); // Ensure you're using the correct ID and db2 instance
+    const doc = await db2.get("roomMatrix1");
     if (doc.matrix[x][y] === "Available") {
-      doc.matrix[x][y] = "Unavailable"; // Book the room
+      doc.matrix[x][y] = "Unavailable";
       await db2.put({
-        // Use db2 here
         _id: "roomMatrix1",
         _rev: doc._rev,
         matrix: doc.matrix,
       });
-      console.log(`Room at [${x},${y}] booked successfully.`);
+      alert(`Room booked successfully.`);
       generateScheduleTable(doc.matrix);
-      // Ensure generateBookingTable is defined and called correctly here
-      // generateBookingTable(); // This needs to be defined elsewhere in your script
     } else {
-      console.log("Room is already booked.");
+      alert("Cannot book. Room is already booked.");
     }
   } catch (err) {
     console.error("An error occurred:", err);
@@ -312,21 +309,18 @@ async function book(x, y) {
 
 async function unbook(x, y) {
   try {
-    const doc = await db2.get("roomMatrix1"); // Ensure you're using the correct ID and db2 instance
+    const doc = await db2.get("roomMatrix1");
     if (doc.matrix[x][y] === "Unavailable") {
-      doc.matrix[x][y] = "Available"; // Book the room
+      doc.matrix[x][y] = "Available";
       await db2.put({
-        // Use db2 here
         _id: "roomMatrix1",
         _rev: doc._rev,
         matrix: doc.matrix,
       });
-      console.log(`Room at [${x},${y}] cancelled successfully.`);
+      alert(`Room unbooked successfully.`);
       generateScheduleTable(doc.matrix);
-      // Ensure generateBookingTable is defined and called correctly here
-      // generateBookingTable(); // This needs to be defined elsewhere in your script
     } else {
-      console.log("Room is not booked yet.");
+      alert("Cannot unbook. Room is not booked yet.");
     }
   } catch (err) {
     console.error("An error occurred:", err);
