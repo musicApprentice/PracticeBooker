@@ -1,6 +1,9 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/7.2.2/pouchdb.min.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TodoList</title>
@@ -24,29 +27,55 @@
         <h2>
             Practice Room Scheduler
         </h2>
-        <h3>Search By Room</h3>
     </header>
     
-    <form>
-      <div id="dropdown-container">
-        <select id="dropdown">
-          <option value=1 >Room 158</option>
-          <option value=2 >Room 159</option>
-          <option value=3 >Room 160</option>
-          <option value=4 >Room 161</option>
-          <option value=5 >Room 162</option>
-          <option value=6 >Room 163</option>
-          <option value=7 >Room 164</option>
-          <option value=8 >Room 165</option>
-          <option value=9 >Room 166</option>
-          <option value=10 >Room 167</option>
-          <option value=11 >Room 168</option>
-          <option value=12 >Room 169</option>
-          <option value=13 >Room 170</option>
+    <div class="header-container">
+      <div class="header">Search By Room Number</div>
+      <div class="dropdown-container">
+        <select class="dropdown" id="dropdown1">
+          <option value="158">Room 158</option>
+        <option value="159">Room 159</option>
+        <option value="160">Room 160</option>
+        <option value="161">Room 161</option>
+        <option value="162">Room 162</option>
+        <option value="163">Room 163</option>
+        <option value="164">Room 164</option>
+        <option value="165">Room 165</option>
+        <option value="166">Room 166</option>
+        <option value="167">Room 167</option>
+        <option value="168">Room 168</option>
+        <option value="169">Room 169</option>
+        <option value="170">Room 170</option>
+          <!-- Add more options as needed -->
         </select>
-        <button onclick="addSubmitButton()" class="submit-button">Submit</button>
+        <button class="submit-button">Submit</button>
       </div>
-    </form>
+    </div>
+    
+    <div class="header-container">
+      <div class="header">Search By Time</div>
+      <div class="dropdown-container">
+        <select class="dropdown" id="dropdown2">
+          <option value="8:00 AM">8:00 AM</option>
+          <option value="9:00 AM">9:00 AM</option>
+          <option value="10:00 AM">10:00 AM</option>
+          <option value="11:00 AM">11:00 AM</option>
+          <option value="12:00 PM">12:00 PM</option>
+          <option value="1:00 PM">1:00 PM</option>
+          <option value="2:00 PM">2:00 PM</option>
+          <option value="3:00 PM">3:00 PM</option>
+          <option value="4:00 PM">4:00 PM</option>
+          <option value="5:00 PM">5:00 PM</option>
+          <option value="6:00 PM">6:00 PM</option>
+          <option value="7:00 PM">7:00 PM</option>
+          <option value="8:00 PM">8:00 PM</option>
+          <option value="9:00 PM">9:00 PM</option>
+          <option value="10:00 APM">10:00 PM</option>
+          <!-- Add more options as needed -->
+        </select>
+        <button class="submit-button1" onclick="animateSearchByTime()">Submit</button>
+      </div>
+    </div>
     <table id="schedule">
       <thead>
         <tr>
@@ -70,7 +99,11 @@
         <!-- Data will be added here -->
       </tbody>
     </table>
-
+  <div class="container-submit">
+    <div class="button-container">
+      <button class="booking-button" onclick="submitBooking()">Book</button>
+    </div>
+  </div>
 
 
     <script src="./app.js">

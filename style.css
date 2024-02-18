@@ -24,6 +24,12 @@ h2 {
   display: flex;
 }
 
+h3{
+  font-size: 80%;
+  font-weight: bold;
+  color: black;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -50,23 +56,104 @@ button {
   background-color: yellow; /* Change to whatever highlight color you prefer */
 }
 
-.submit-button {
-  background-color: #04a209; /* Green */
+/* Hover effect */
+.submit-button:hover {
+  background-color: rgb(107, 40, 40);
+}
+
+.submit-button1:hover {
+  background-color: rgb(107, 40, 40);
+}
+
+.booking-button:hover{
+  background-color: rgb(107, 40, 40);
+}
+.booking-button {
+  font-weight: black;
+  background-color: maroon; 
   border: none;
   color: white;
   padding: 10px 10px;
   text-align: center;
   text-decoration: none;
-  display: flex;
-  font-size: 16px;
+  font-size: 40px;
   margin: 2px 2px;
   cursor: pointer;
   border-radius: 2px;
   width: auto;
-  height: 30px;
+  height: auto;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Hover effect */
-.submit-button:hover {
-  background-color: #45a049;
+.container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 20vh;
+}
+
+.container-submit {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  margin-top: 20px; /* Adjust margin as needed */
+}
+
+.button-container {
+  text-align: center;
+}
+
+.header-container {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 20px;
+}
+
+.header {
+  font-size: larger;
+  font-weight: bold;
+  flex: 1;
+  margin-right: 5px; /* Adjusted margin */
+}
+
+.dropdown-container {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  margin-right: 5px; /* Adjusted margin */
+}
+
+.dropdown {
+  flex: 1;
+  margin-right: 5px; /* Adjusted margin */
+}
+
+.submit-button {
+  font-weight: bold;
+  padding: 8px 16px;
+  background-color: maroon;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button1 {
+  font-weight: bold;
+  padding: 8px 16px;
+  background-color: maroon;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@keyframes flash {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.flash-animation {
+  animation: flash 0.5s infinite; /* Adjust animation duration as needed */
 }
